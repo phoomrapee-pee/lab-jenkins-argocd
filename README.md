@@ -1,2 +1,3 @@
-# lab-jenkins-argocd
-REF LAB:  https://www.youtube.com/watch?v=mhMMNl8mgbY&amp;ab_channel=DevOpsMadeEasy
+# gitops-demo
+gitops-demo
+Please follow the video: https://www.youtube.com/watch?v=mhMMNl8mgbY
