@@ -32,5 +32,33 @@ pipeline {
                 sh "cat deployment.yml"
             }
         }
+        // stage('Push the changed deployment file to Git') {
+        //     steps {
+        //         script{
+        //             sh """
+        //             git config --global user.name "phoomrapee-pee"
+        //             git config --global user.email "60010804@kmitl.ac.th"
+        //             git add deployment.yml
+        //             git commit -m 'Updated the deployment file testttt' """
+        //             withCredentials([usernamePassword(credentialsId: 'MyPhoomrapeeGitHub', passwordVariable: 'pass', usernameVariable: 'user')]) {
+        //                 sh "git push http://${user}:${pass}@github.com/phoomrapee-pee/lab-jenkins-argocd.git main"
+        //             }
+        //         }
+        //     }
+        // }
+        stage('Push the changed deployment file to Git Public') {
+            steps {
+                script{
+                    sh """
+                    git config --global --add safe.directory /var/lib/jenkins/workspace/ArgoCD/gitops
+                    git config --global user.name "phoomrapee-pee"
+                    git config --global user.email "60010804@kmitl.ac.th"
+                    git add deployment.yml
+                    git commit -m 'Updated the deployment file testttt'
+                    git push https://github.com/phoomrapee-pee/lab-jenkins-argocd.git """
+                }
+            }
+        }
+
     }
 }
