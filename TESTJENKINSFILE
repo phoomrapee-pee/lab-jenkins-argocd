@@ -1,0 +1,36 @@
+pipeline {
+    agent any
+    environment {
+        DOCKERHUB_USERNAME = "phoomrapee"
+        APP_NAME = "gitops-demo-app"
+        IMAGE_TAG = "${BUILD_NUMBER}"
+        IMAGE_NAME = "${DOCKERHUB_USERNAME}" + "/" + "${APP_NAME}"
+        REGISTRY_CREDS = 'dockerhub'
+    }
+    stages {
+        stage('Print Build Number') {
+            steps {
+                sh "echo ${BUILD_NUMBER}"
+            }
+        }
+        stage('clonning from GIT') {
+            steps {
+                git branch: 'main', credentialsId: 'MyPhoomrapeeGitHub', url: 'https://github.com/phoomrapee-pee/lab-jenkins-argocd'
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                script{
+                    docker_image = docker.build "${IMAGE_NAME}"
+                }
+            }
+        }
+        stage('Updating Kubernetes deployment file') {
+            steps {
+                sh "cat deployment.yml"
+                sh "sed -i 's/${APP_NAME}.*/${APP_NAME}:${IMAGE_TAG}/g' deployment.yml"
+                sh "cat deployment.yml"
+            }
+        }
+    }
+}
